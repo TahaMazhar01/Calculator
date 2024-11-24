@@ -38,7 +38,10 @@ Press the = button to evaluate the expression.
 Use the AC button to clear the input and start a new calculation.
 Use the Del button to remove the last digit from the input.
 If you attempt to divide by zero, a "Math Error" message will be displayed.
+
+
 Example
+
 Input: 10 + 5
 
 Press =
