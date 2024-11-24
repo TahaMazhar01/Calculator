@@ -28,7 +28,7 @@ To run this project, you need a web browser. No additional installations are req
 
 1. Clone the repository or download the source code.
    ```bash
-   git clone https://github.com/yourusername/calculator.git
+   git clone https://github.com/TahaMazhar01/calculator.git
 
 2.Open the index.html file in your web browser.
 Usage
