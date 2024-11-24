@@ -13,11 +13,14 @@ arr.forEach(button => {
                 if (!isValidExpression(string)) {
                     throw new Error('Invalid expression');
                 }
-                // Check for division by zero
-                if (string.includes('/0') || string.includes('0/0')) {
+
+                // Evaluate the expression to check for division by zero
+                const result = eval(string);
+                if (result === Infinity || result === -Infinity) {
                     throw new Error('Cannot divide by zero');
                 }
-                string = eval(string);
+
+                string = result;
                 input.value = string;
             } catch (error) {
                 input.value = error.message; // Show specific error message
@@ -32,10 +35,25 @@ arr.forEach(button => {
                 input.value = string;
             }
         } else {
+            // Prevent starting with an operator
+            if (string.length === 0 && isOperator(value)) {
+                input.value = 'Input some value first'; // Show message to user
+                setTimeout(() => {
+                    input.value = ''; // Clear the message after a short delay
+                }, 2000); // Message lasts for 2 seconds
+                return; // Do not add the operator
+            }
+
             // Prevent multiple decimal points in a single number
-            if (value === '.' && string.slice(-1) === '.') {
+            if (value === '.' && (string.slice(-1) === '.' || /[+\-*/]$/.test(string))) {
                 return; // Do not add another decimal point
             }
+
+            // Prevent multiple operators in a row
+            if (isOperator(value) && isOperator(string.slice(-1))) {
+                return; // Do not add another operator
+            }
+
             string += value;
             input.value = string;
         }
@@ -45,6 +63,11 @@ arr.forEach(button => {
 // Function to validate the expression
 function isValidExpression(expr) {
     // Regex to check for invalid sequences
-    const invalidPatterns = /(\d+[\+\-\*\/]{2,})|([\+\-\*\/]{2,})|(\d+\.\d+\.\d+)/;
+    const invalidPatterns = /(\d+[\+\-\*\/]{2,})|([\+\-\*\/]{2,})|(\.\.)/;
     return !invalidPatterns.test(expr);
+}
+
+// Function to check if a character is an operator
+function isOperator(char) {
+    return ['+', '-', '*', '/', '%'].includes(char);
 }
